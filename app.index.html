@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="weatherApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplicación de Clima</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="WeatherController">
+    <div class="container">
+        <h1>Clima Actual</h1>
+        <input type="text" ng-model="city" placeholder="Ingresa una ciudad">
+        <button ng-click="getWeather()">Obtener Clima</button>
+        <div ng-if="weather">
+            <h2>{{ weather.name }}</h2>
+            <p>Temperatura: {{ weather.main.temp }} °C</p>
+        </div>
+    </div>
+    <script>
+        angular.module('weatherApp', [])
+            .controller('WeatherController', function($scope, $http) {
+                $scope.getWeather = function() {
+                    const apiKey = 'TU_API_KEY';
+                    $http.get(`https://api.openweathermap.org/data/2.5/weather?q=${$scope.city}&appid=${apiKey}&units=metric`)
+                        .then(response => {
+                            $scope.weather = response.data;
+                        });
+                };
+            });
+    </script>
+</body>
+</html>
